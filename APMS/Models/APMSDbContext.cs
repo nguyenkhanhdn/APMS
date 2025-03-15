@@ -3,6 +3,7 @@ using APMS.Models;
 namespace APMS.Models
 {
     using Microsoft.EntityFrameworkCore;
+    using System.ComponentModel.DataAnnotations;
 
     public class ParkingDbContext : DbContext
     {
@@ -34,7 +35,7 @@ namespace APMS.Models
             modelBuilder.Entity<ParkingTransaction>()
                 .HasOne(pt => pt.ParkingSlot)
                 .WithMany()
-                .HasForeignKey(pt => pt.SlotId);
+                .HasForeignKey(pt => pt.ParkingSlotId);
 
             modelBuilder.Entity<ParkingTransaction>()
                 .HasOne(pt => pt.User)
@@ -59,66 +60,98 @@ public DbSet<APMS.Models.UserPaymentTracking> UserPaymentTracking { get; set; } 
 
     public class User
     {
+        [Display(Name = "User ID")]
         public int UserId { get; set; }
+        [Display(Name = "Tên người dùng")]
         public string FullName { get; set; }
+        [Display(Name = "Tên đăng nhập")]
         public string Username { get; set; }
+        [Display(Name = "Mật khẩu")]
         public string PasswordHash { get; set; }
+        [Display(Name = "Vai trò")]
         public string Role { get; set; }
+        [Display(Name = "Số dư")]
+        public string Balance { get; set; }
     }
 
     public class VehicleType
     {
+        [Display(Name = "Vehicle Type ID")]
         public int VehicleTypeId { get; set; }
+        [Display(Name = "Loại xe")]
         public string TypeName { get; set; }
+        [Display(Name = "Giá tiền")]
         public decimal PricePerHour { get; set; }
     }
 
     public class Vehicle
     {
+        [Display(Name = "Vehicle ID")]
         public int VehicleId { get; set; }
+        [Display(Name = "Biển số xe")]
         public string LicensePlate { get; set; }
+        [Display(Name = "Tên chủ xe")]
         public string OwnerName { get; set; }
+        [Display(Name = "Loại xe")]
         public int VehicleTypeId { get; set; }
         public VehicleType VehicleType { get; set; }
     }
 
     public class ParkingSlot
     {
+        [Display(Name = "Parking Slot ID")]
         public int ParkingSlotId { get; set; }
+        [Display(Name = "Số hiệu")]
         public string SlotNumber { get; set; }
+        [Display(Name = "Trạng thái")]
         public string Status { get; set; }
     }
 
     public class ParkingTransaction
     {
         public int ParkingTransactionId { get; set; }
+        [Display(Name = "Vehicle ID")]
         public int VehicleId { get; set; }
+        
         public Vehicle Vehicle { get; set; }
-        public int SlotId { get; set; }
+        [Display(Name = "Parking Slot ID")]
+        public int ParkingSlotId { get; set; }
         public ParkingSlot ParkingSlot { get; set; }
+        [Display(Name = "User ID")]
         public int UserId { get; set; }
         public User User { get; set; }
+        [Display(Name = "Thời gian vào")]
         public DateTime EntryTime { get; set; }
+        [Display(Name = "Thời gian ra")]
         public DateTime? ExitTime { get; set; }
+        [Display(Name = "Tổng tiền")]
         public decimal? TotalAmount { get; set; }
     }
 
     public class Tariff
     {
+        [Key]
         public int TariffId { get; set; }
+        [Display(Name = "Tên gói cước")]
         public string TariffName { get; set; }
+        [Display(Name = "Giá tiền")]
         public decimal Price { get; set; }
+        [Display(Name = "Mô tả")]
         public string Description { get; set; }
     }
 
     public class UserPaymentTracking
     {
         public int Id { get; set; }
+        [Display(Name = "User ID")]
         public int UserId { get; set; }
         public User User { get; set; }
+        [Display(Name = "Tariff ID")]
         public int TariffId { get; set; }
         public Tariff Tariff { get; set; }
+        [Display(Name = "Ngày thanh toán")]
         public DateTime PaymentDate { get; set; }
+        [Display(Name = "Số tiền")]
         public float Amount { get; set; }
         public bool IsPaid { get; set; }
     }

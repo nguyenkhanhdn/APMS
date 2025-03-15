@@ -57,7 +57,7 @@ namespace APMS.Migrations
                     b.Property<DateTime?>("ExitTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SlotId")
+                    b.Property<int>("ParkingSlotId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("TotalAmount")
@@ -71,7 +71,7 @@ namespace APMS.Migrations
 
                     b.HasKey("ParkingTransactionId");
 
-                    b.HasIndex("SlotId");
+                    b.HasIndex("ParkingSlotId");
 
                     b.HasIndex("UserId");
 
@@ -111,6 +111,10 @@ namespace APMS.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Balance")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -215,7 +219,7 @@ namespace APMS.Migrations
                 {
                     b.HasOne("APMS.Models.ParkingSlot", "ParkingSlot")
                         .WithMany()
-                        .HasForeignKey("SlotId")
+                        .HasForeignKey("ParkingSlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

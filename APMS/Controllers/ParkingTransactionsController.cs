@@ -68,7 +68,7 @@ namespace APMS.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SlotId"] = new SelectList(_context.ParkingSlots, "ParkingSlotId", "ParkingSlotId", parkingTransaction.SlotId);
+            ViewData["SlotId"] = new SelectList(_context.ParkingSlots, "ParkingSlotId", "ParkingSlotId", parkingTransaction.ParkingSlotId);
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", parkingTransaction.UserId);
             ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", parkingTransaction.VehicleId);
             return View(parkingTransaction);
@@ -87,7 +87,7 @@ namespace APMS.Controllers
             {
                 return NotFound();
             }
-            ViewData["SlotId"] = new SelectList(_context.ParkingSlots, "ParkingSlotId", "ParkingSlotId", parkingTransaction.SlotId);
+            ViewData["SlotId"] = new SelectList(_context.ParkingSlots, "ParkingSlotId", "ParkingSlotId", parkingTransaction.ParkingSlotId);
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", parkingTransaction.UserId);
             ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", parkingTransaction.VehicleId);
             return View(parkingTransaction);
@@ -125,7 +125,7 @@ namespace APMS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["SlotId"] = new SelectList(_context.ParkingSlots, "ParkingSlotId", "ParkingSlotId", parkingTransaction.SlotId);
+            ViewData["SlotId"] = new SelectList(_context.ParkingSlots, "ParkingSlotId", "ParkingSlotId", parkingTransaction.ParkingSlotId);
             ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", parkingTransaction.UserId);
             ViewData["VehicleId"] = new SelectList(_context.Vehicles, "VehicleId", "VehicleId", parkingTransaction.VehicleId);
             return View(parkingTransaction);
