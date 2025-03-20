@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace APMS.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateDatabaseSchema : Migration
+    public partial class abcd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,9 +47,10 @@ namespace APMS.Migrations
                     UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Balance = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,7 +64,8 @@ namespace APMS.Migrations
                     VehicleTypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     TypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PricePerHour = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    DescriptionImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,12 +108,18 @@ namespace APMS.Migrations
                     VehicleId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LicensePlate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OwnerName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     VehicleTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vehicles", x => x.VehicleId);
+                    table.ForeignKey(
+                        name: "FK_Vehicles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Vehicles_VehicleTypes_VehicleTypeId",
                         column: x => x.VehicleTypeId,
@@ -127,8 +135,7 @@ namespace APMS.Migrations
                     ParkingTransactionId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     VehicleId = table.Column<int>(type: "int", nullable: false),
-                    SlotId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ParkingSlotId = table.Column<int>(type: "int", nullable: false),
                     EntryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExitTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
@@ -137,16 +144,10 @@ namespace APMS.Migrations
                 {
                     table.PrimaryKey("PK_ParkingTransactions", x => x.ParkingTransactionId);
                     table.ForeignKey(
-                        name: "FK_ParkingTransactions_ParkingSlots_SlotId",
-                        column: x => x.SlotId,
+                        name: "FK_ParkingTransactions_ParkingSlots_ParkingSlotId",
+                        column: x => x.ParkingSlotId,
                         principalTable: "ParkingSlots",
                         principalColumn: "ParkingSlotId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ParkingTransactions_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ParkingTransactions_Vehicles_VehicleId",
@@ -157,14 +158,9 @@ namespace APMS.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ParkingTransactions_SlotId",
+                name: "IX_ParkingTransactions_ParkingSlotId",
                 table: "ParkingTransactions",
-                column: "SlotId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ParkingTransactions_UserId",
-                table: "ParkingTransactions",
-                column: "UserId");
+                column: "ParkingSlotId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ParkingTransactions_VehicleId",
@@ -179,6 +175,11 @@ namespace APMS.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_UserPaymentTracking_UserId",
                 table: "UserPaymentTracking",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Vehicles_UserId",
+                table: "Vehicles",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(

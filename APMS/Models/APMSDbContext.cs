@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using APMS.Models;
-namespace APMS.Models
+﻿namespace APMS.Models
 {
     using Microsoft.EntityFrameworkCore;
     using System.ComponentModel.DataAnnotations;
@@ -21,36 +19,7 @@ namespace APMS.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            // Ràng buộc khóa ngoại
-            modelBuilder.Entity<Vehicle>()
-                .HasOne(v => v.VehicleType)
-                .WithMany()
-                .HasForeignKey(v => v.VehicleTypeId);
-
-            modelBuilder.Entity<ParkingTransaction>()
-                .HasOne(pt => pt.Vehicle)
-                .WithMany()
-                .HasForeignKey(pt => pt.VehicleId);
-
-            modelBuilder.Entity<ParkingTransaction>()
-                .HasOne(pt => pt.ParkingSlot)
-                .WithMany()
-                .HasForeignKey(pt => pt.ParkingSlotId);
-
-            modelBuilder.Entity<ParkingTransaction>()
-                .HasOne(pt => pt.User)
-                .WithMany()
-                .HasForeignKey(pt => pt.UserId);
-
-            modelBuilder.Entity<UserPaymentTracking>()
-           .HasOne(up => up.User)
-           .WithMany()
-           .HasForeignKey(up => up.UserId);
-
-            modelBuilder.Entity<UserPaymentTracking>()
-                .HasOne(up => up.Tariff)
-                .WithMany()
-                .HasForeignKey(up => up.TariffId);
+         
         }
 
 public DbSet<APMS.Models.Tariff> Tariff { get; set; } = default!;
@@ -62,12 +31,12 @@ public DbSet<APMS.Models.UserPaymentTracking> UserPaymentTracking { get; set; } 
     {
         [Display(Name = "User ID")]
         public int UserId { get; set; }
-        [Display(Name = "Tên người dùng")]
+        [Display(Name = "Chủ xe")]
         public string FullName { get; set; }
-        [Display(Name = "Tên đăng nhập")]
-        public string Username { get; set; }
-        [Display(Name = "Mật khẩu")]
-        public string PasswordHash { get; set; }
+        [Display(Name = "Thư điện tử")]
+        public string Email { get; set; }
+        [Display(Name = "Số điện thoại")]
+        public string Phone { get; set; }
         [Display(Name = "Vai trò")]
         public string Role { get; set; }
         [Display(Name = "Số dư")]
@@ -76,12 +45,14 @@ public DbSet<APMS.Models.UserPaymentTracking> UserPaymentTracking { get; set; } 
 
     public class VehicleType
     {
-        [Display(Name = "Vehicle Type ID")]
+        [Display(Name = "Loại xe ID")]
         public int VehicleTypeId { get; set; }
         [Display(Name = "Loại xe")]
         public string TypeName { get; set; }
-        [Display(Name = "Giá tiền")]
-        public decimal PricePerHour { get; set; }
+        [Display(Name = "Ảnh mô tả")]
+        public string DescriptionImage { get; set; }
+        [Display(Name = "Mô tả")]
+        public string Description { get; set; }
     }
 
     public class Vehicle
@@ -90,8 +61,9 @@ public DbSet<APMS.Models.UserPaymentTracking> UserPaymentTracking { get; set; } 
         public int VehicleId { get; set; }
         [Display(Name = "Biển số xe")]
         public string LicensePlate { get; set; }
-        [Display(Name = "Tên chủ xe")]
-        public string OwnerName { get; set; }
+        [Display(Name = "Chủ xe")]
+        public int UserId { get; set; }
+        public User User { get; set; }
         [Display(Name = "Loại xe")]
         public int VehicleTypeId { get; set; }
         public VehicleType VehicleType { get; set; }
@@ -103,6 +75,7 @@ public DbSet<APMS.Models.UserPaymentTracking> UserPaymentTracking { get; set; } 
         public int ParkingSlotId { get; set; }
         [Display(Name = "Số hiệu")]
         public string SlotNumber { get; set; }
+        
         [Display(Name = "Trạng thái")]
         public string Status { get; set; }
     }
@@ -117,9 +90,7 @@ public DbSet<APMS.Models.UserPaymentTracking> UserPaymentTracking { get; set; } 
         [Display(Name = "Parking Slot ID")]
         public int ParkingSlotId { get; set; }
         public ParkingSlot ParkingSlot { get; set; }
-        [Display(Name = "User ID")]
-        public int UserId { get; set; }
-        public User User { get; set; }
+        
         [Display(Name = "Thời gian vào")]
         public DateTime EntryTime { get; set; }
         [Display(Name = "Thời gian ra")]
@@ -153,6 +124,7 @@ public DbSet<APMS.Models.UserPaymentTracking> UserPaymentTracking { get; set; } 
         public DateTime PaymentDate { get; set; }
         [Display(Name = "Số tiền")]
         public float Amount { get; set; }
+        [Display(Name = "Đã thanh toán")]
         public bool IsPaid { get; set; }
     }
 }

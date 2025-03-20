@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APMS.Migrations
 {
     [DbContext(typeof(ParkingDbContext))]
-    [Migration("20250313064956_UpdateDatabaseSchema")]
-    partial class UpdateDatabaseSchema
+    [Migration("20250320142711_abcd")]
+    partial class abcd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,23 +60,18 @@ namespace APMS.Migrations
                     b.Property<DateTime?>("ExitTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("SlotId")
+                    b.Property<int>("ParkingSlotId")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
 
                     b.Property<int>("VehicleId")
                         .HasColumnType("int");
 
                     b.HasKey("ParkingTransactionId");
 
-                    b.HasIndex("SlotId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("ParkingSlotId");
 
                     b.HasIndex("VehicleId");
 
@@ -115,19 +110,23 @@ namespace APMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
+                    b.Property<string>("Balance")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -180,14 +179,15 @@ namespace APMS.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("OwnerName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<int>("VehicleTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("VehicleId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("VehicleTypeId");
 
@@ -202,8 +202,13 @@ namespace APMS.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleTypeId"));
 
-                    b.Property<decimal>("PricePerHour")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DescriptionImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TypeName")
                         .IsRequired()
@@ -218,13 +223,7 @@ namespace APMS.Migrations
                 {
                     b.HasOne("APMS.Models.ParkingSlot", "ParkingSlot")
                         .WithMany()
-                        .HasForeignKey("SlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("APMS.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ParkingSlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -235,8 +234,6 @@ namespace APMS.Migrations
                         .IsRequired();
 
                     b.Navigation("ParkingSlot");
-
-                    b.Navigation("User");
 
                     b.Navigation("Vehicle");
                 });
@@ -262,11 +259,19 @@ namespace APMS.Migrations
 
             modelBuilder.Entity("APMS.Models.Vehicle", b =>
                 {
+                    b.HasOne("APMS.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("APMS.Models.VehicleType", "VehicleType")
                         .WithMany()
                         .HasForeignKey("VehicleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
 
                     b.Navigation("VehicleType");
                 });

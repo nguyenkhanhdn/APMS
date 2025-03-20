@@ -53,7 +53,7 @@ namespace APMS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,FullName,Username,PasswordHash,Role")] User user)
+        public async Task<IActionResult> Create([Bind("UserId,FullName,Email,Phone,Role,Balance")] User user)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace APMS.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,FullName,Username,PasswordHash,Role")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,FullName,Email,Phone,Role,Balance")] User user)
         {
             if (id != user.UserId)
             {
