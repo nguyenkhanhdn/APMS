@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -56,10 +59,35 @@
 
                     <li><a href="~/Home/about">Giới thiệu</a></li>
                     <li><a href="~/Home/Contact">Liên hệ</a></li>
-                    
+
+                    <li class="dropdown">
+                        <a href="#"><span>Tài khoản</span> <i class="bi bi-chevron-down"></i></a>
+                        <ul>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <li>
+                                    <a href="/Account/Manage/Index" title="Manage">Hi, @User.Identity?.Name!</a>
+                                </li>
+                                <li>
+                                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                        <button style="padding:22px !important;" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                                    </form>
+                                </li>
+                            }
+                            else
+                            {
+                                <li>
+                                    <a href="/Identity/Account/Register">Register</a>
+                                </li>
+                                <li>
+                                    <a href="/Identity/Account/Login">Login</a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
                 </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
-                <partial name="_LoginPartial" />
+                @* <i class="bi bi-list mobile-nav-toggle"></i> *@
+                
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
 
@@ -139,7 +167,7 @@
                     &copy; Copyright <strong><span>APMS</span></strong>. All Rights Reserved
                 </div>
                 <div class="credits">
-                  Designed by <a href="~/Home">Automatic Parking Management System</a>
+                  Designed by <a href="~/Home">Automatic Parking Management System</a> | <a href="~/Admin">Admin</a>
                 </div>
             </div>
             <div class="social-links text-center text-md-right pt-3 pt-md-0">
