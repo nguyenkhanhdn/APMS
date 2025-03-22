@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APMS.Migrations
 {
     [DbContext(typeof(ParkingDbContext))]
-    [Migration("20250320142711_abcd")]
-    partial class abcd
+    [Migration("20250322155834_abc")]
+    partial class abc
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,25 @@ namespace APMS.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("APMS.Models.ParkingAvailability", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AvailableSlots")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalSlots")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ParkingAvailabilities");
+                });
 
             modelBuilder.Entity("APMS.Models.ParkingSlot", b =>
                 {

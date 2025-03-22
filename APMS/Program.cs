@@ -33,6 +33,9 @@ else
     app.UseHsts();
 }
 
+
+//app.Services.CreateScope().ServiceProvider.GetRequiredService<ParkingDbContext>().Database.Migrate();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

@@ -10,6 +10,7 @@
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<ParkingSlot> ParkingSlots { get; set; }
         public DbSet<ParkingTransaction> ParkingTransactions { get; set; }
+        public DbSet<ParkingAvailability> ParkingAvailabilities { get; set; }
 
         public ParkingDbContext(DbContextOptions<ParkingDbContext> options) : base(options) 
         { 
@@ -18,13 +19,36 @@
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
          
         }
 
-public DbSet<APMS.Models.Tariff> Tariff { get; set; } = default!;
+        public DbSet<APMS.Models.Tariff> Tariff { get; set; } = default!;
+        public DbSet<APMS.Models.UserPaymentTracking> UserPaymentTracking { get; set; } = default!;
 
-public DbSet<APMS.Models.UserPaymentTracking> UserPaymentTracking { get; set; } = default!;
+        public void VehicleEntry()
+        {
+            var availability = ParkingAvailabilities.FirstOrDefault();
+            if (availability != null && availability.AvailableSlots > 0)
+            {
+                availability.AvailableSlots--;
+                SaveChanges();
+            }
+        }
+        public void VehicleExit()
+        {
+            var availability = ParkingAvailabilities.FirstOrDefault();
+            if (availability != null)
+            {
+                availability.AvailableSlots++;
+                SaveChanges();
+            }
+        }
+    }
+    public class ParkingAvailability
+    {
+        public int Id { get; set; }
+        public int TotalSlots { get; set; }
+        public int AvailableSlots { get; set; }
     }
 
     public class User

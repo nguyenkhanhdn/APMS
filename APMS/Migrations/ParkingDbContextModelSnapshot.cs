@@ -22,6 +22,25 @@ namespace APMS.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("APMS.Models.ParkingAvailability", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AvailableSlots")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalSlots")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ParkingAvailabilities");
+                });
+
             modelBuilder.Entity("APMS.Models.ParkingSlot", b =>
                 {
                     b.Property<int>("ParkingSlotId")
