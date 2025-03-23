@@ -48,8 +48,8 @@ namespace APMS.Controllers
         // GET: Vehicles/Create
         public IActionResult Create()
         {
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId");
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "VehicleTypeId", "VehicleTypeId");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
+            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "VehicleTypeId", "TypeName");
             return View();
         }
 
@@ -66,8 +66,8 @@ namespace APMS.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", vehicle.UserId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "VehicleTypeId", "VehicleTypeId", vehicle.VehicleTypeId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", vehicle.UserId);
+            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "VehicleTypeId", "TypeName", vehicle.VehicleTypeId);
             return View(vehicle);
         }
 
@@ -84,8 +84,8 @@ namespace APMS.Controllers
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", vehicle.UserId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "VehicleTypeId", "VehicleTypeId", vehicle.VehicleTypeId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", vehicle.UserId);
+            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "VehicleTypeId", "TypeName", vehicle.VehicleTypeId);
             return View(vehicle);
         }
 
@@ -121,8 +121,8 @@ namespace APMS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "UserId", vehicle.UserId);
-            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "VehicleTypeId", "VehicleTypeId", vehicle.VehicleTypeId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", vehicle.UserId);
+            ViewData["VehicleTypeId"] = new SelectList(_context.VehicleTypes, "VehicleTypeId", "TypeName", vehicle.VehicleTypeId);
             return View(vehicle);
         }
 

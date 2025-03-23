@@ -1,13 +1,13 @@
 ﻿@model APMS.Models.VehicleType
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Danh mục loại xe";
 }
 
-<h1>Details</h1>
+<h1>Thông tin chi tiết</h1>
 
 <div>
-    <h4>VehicleType</h4>
+    <h4>Loại xe</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -30,7 +30,8 @@
         </dd>
     </dl>
 </div>
+<p></p>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.VehicleTypeId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Trở về danh sách</a>
 </div>

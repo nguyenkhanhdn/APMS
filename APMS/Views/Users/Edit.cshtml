@@ -1,15 +1,14 @@
 ﻿@model APMS.Models.User
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Quản lý khách hàng";
 }
 
-<h1>Edit</h1>
+<h1>Thay đổi thông tin</h1>
 
-<h4>User</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UserId" />
@@ -38,15 +37,16 @@
                 <input asp-for="Balance" class="form-control" />
                 <span asp-validation-for="Balance" class="text-danger"></span>
             </div>
+            <p></p>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
+<p></p>
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Trở về danh sách</a>
 </div>
 
 @section Scripts {

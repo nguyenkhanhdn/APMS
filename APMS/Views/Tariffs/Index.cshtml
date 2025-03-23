@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<APMS.Models.Tariff>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bảng giá giữ xe";
 }
 
-<h1>Index</h1>
+<h1>Bảng giá giữ xe</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Thêm mới</a>
 </p>
-<table class="table">
+<table class="table datatable" id="tariff">
     <thead>
         <tr>
             <th>
@@ -45,3 +45,13 @@
 }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        let dataTable = new DataTable("#tariff", {
+            searchable: true,
+            fixedHeight: true,
+
+        });
+    </script>
+}

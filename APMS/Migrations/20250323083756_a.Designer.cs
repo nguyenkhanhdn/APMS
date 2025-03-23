@@ -4,6 +4,7 @@ using APMS.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APMS.Migrations
 {
     [DbContext(typeof(ParkingDbContext))]
-    partial class ParkingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250323083756_a")]
+    partial class a
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,6 +65,38 @@ namespace APMS.Migrations
                     b.ToTable("ParkingSlots");
                 });
 
+            modelBuilder.Entity("APMS.Models.ParkingTransaction", b =>
+                {
+                    b.Property<int>("ParkingTransactionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParkingTransactionId"));
+
+                    b.Property<DateTime>("EntryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ExitTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ParkingSlotId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ParkingTransactionId");
+
+                    b.HasIndex("ParkingSlotId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("ParkingTransactions");
+                });
+
             modelBuilder.Entity("APMS.Models.Tariff", b =>
                 {
                     b.Property<int>("TariffId")
@@ -84,38 +119,6 @@ namespace APMS.Migrations
                     b.HasKey("TariffId");
 
                     b.ToTable("Tariff");
-                });
-
-            modelBuilder.Entity("APMS.Models.Transaction", b =>
-                {
-                    b.Property<int>("TransactionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TransactionId"));
-
-                    b.Property<DateTime>("EntryTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("ExitTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ParkingSlotId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("VehicleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TransactionId");
-
-                    b.HasIndex("ParkingSlotId");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("APMS.Models.User", b =>
@@ -151,7 +154,7 @@ namespace APMS.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("APMS.Models.UserPayment", b =>
+            modelBuilder.Entity("APMS.Models.UserPaymentTracking", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -180,7 +183,7 @@ namespace APMS.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserPayments");
+                    b.ToTable("UserPaymentTracking");
                 });
 
             modelBuilder.Entity("APMS.Models.Vehicle", b =>
@@ -235,16 +238,16 @@ namespace APMS.Migrations
                     b.ToTable("VehicleTypes");
                 });
 
-            modelBuilder.Entity("APMS.Models.Transaction", b =>
+            modelBuilder.Entity("APMS.Models.ParkingTransaction", b =>
                 {
                     b.HasOne("APMS.Models.ParkingSlot", "ParkingSlot")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("ParkingSlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("APMS.Models.Vehicle", "Vehicle")
-                        .WithMany("Vehicles")
+                        .WithMany()
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -254,16 +257,16 @@ namespace APMS.Migrations
                     b.Navigation("Vehicle");
                 });
 
-            modelBuilder.Entity("APMS.Models.UserPayment", b =>
+            modelBuilder.Entity("APMS.Models.UserPaymentTracking", b =>
                 {
                     b.HasOne("APMS.Models.Tariff", "Tariff")
-                        .WithMany("UserPayments")
+                        .WithMany()
                         .HasForeignKey("TariffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("APMS.Models.User", "User")
-                        .WithMany("UserPayments")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -276,13 +279,13 @@ namespace APMS.Migrations
             modelBuilder.Entity("APMS.Models.Vehicle", b =>
                 {
                     b.HasOne("APMS.Models.User", "User")
-                        .WithMany("Vehicles")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("APMS.Models.VehicleType", "VehicleType")
-                        .WithMany("Vehicles")
+                        .WithMany()
                         .HasForeignKey("VehicleTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -290,33 +293,6 @@ namespace APMS.Migrations
                     b.Navigation("User");
 
                     b.Navigation("VehicleType");
-                });
-
-            modelBuilder.Entity("APMS.Models.ParkingSlot", b =>
-                {
-                    b.Navigation("Transactions");
-                });
-
-            modelBuilder.Entity("APMS.Models.Tariff", b =>
-                {
-                    b.Navigation("UserPayments");
-                });
-
-            modelBuilder.Entity("APMS.Models.User", b =>
-                {
-                    b.Navigation("UserPayments");
-
-                    b.Navigation("Vehicles");
-                });
-
-            modelBuilder.Entity("APMS.Models.Vehicle", b =>
-                {
-                    b.Navigation("Vehicles");
-                });
-
-            modelBuilder.Entity("APMS.Models.VehicleType", b =>
-                {
-                    b.Navigation("Vehicles");
                 });
 #pragma warning restore 612, 618
         }

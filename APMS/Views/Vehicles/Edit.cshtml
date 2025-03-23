@@ -9,7 +9,7 @@
 <h4>Vehicle</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-10">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="VehicleId" />
@@ -28,13 +28,14 @@
                 <select asp-for="VehicleTypeId" class="form-control" asp-items="ViewBag.VehicleTypeId"></select>
                 <span asp-validation-for="VehicleTypeId" class="text-danger"></span>
             </div>
+            <p></p>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
+<p></p>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

@@ -1,14 +1,12 @@
 ﻿@model APMS.Models.VehicleType
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Danh mục loại xe";
 }
 
-<h1>Delete</h1>
-
-<h3>Are you sure you want to delete this?</h3>
+<h3>Bạn chắc chắn muốn xóa thông tin này không?</h3>
 <div>
-    <h4>VehicleType</h4>
+    <h4>Loại xe</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -30,10 +28,10 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
-    
+    <p></p>
     <form asp-action="Delete">
         <input type="hidden" asp-for="VehicleTypeId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Trở về danh sách</a>
     </form>
 </div>
