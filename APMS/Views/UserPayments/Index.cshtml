@@ -1,0 +1,69 @@
+﻿@model IEnumerable<APMS.Models.UserPayment>
+
+@{
+    ViewData["Title"] = "Bảng theo dõi thanh toán";
+}
+
+<h1>THEO DÕI THANH TOÁN</h1>
+
+<p>
+    <a asp-action="Create">Thêm mới</a>
+</p>
+<table class="table datatable" id="userPayments">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tariff)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Amount)
+            </th>
+           @*  <th>
+                @Html.DisplayNameFor(model => model.IsPaid)
+            </th> *@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tariff.TariffName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PaymentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+           @*  <td>
+                @Html.DisplayFor(modelItem => item.IsPaid)
+            </td> *@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        let dataTable = new DataTable("#userPayments", {
+            searchable: true,
+            fixedHeight: true,
+
+        });
+    </script>
+}

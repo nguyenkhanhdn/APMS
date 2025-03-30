@@ -7,7 +7,7 @@
 <h1>Số chỗ đỗ xe</h1>
 
 
-<table class="table">
+<table class="table datatable" id="parkingSlots">
     <thead>
         <tr>
             <th>
@@ -29,11 +29,21 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ParkingSlotId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ParkingSlotId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ParkingSlotId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ParkingSlotId">Sửa</a> |
+                <a asp-action="Details" asp-route-id="@item.ParkingSlotId">Chi tiết</a> |
+                <a asp-action="Delete" asp-route-id="@item.ParkingSlotId">Xóa</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts {
+    <script>
+        let dataTable = new DataTable("#parkingSlots", {
+            searchable: true,
+            fixedHeight: true,
+
+        });
+    </script>
+}

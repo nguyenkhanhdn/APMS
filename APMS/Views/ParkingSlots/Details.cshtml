@@ -1,13 +1,13 @@
 ﻿@model APMS.Models.ParkingSlot
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Quản lý chỗ đỗ xe";
 }
 
-<h1>Details</h1>
+<h1>Quản lý chỗ đỗ xe</h1>
 
 <div>
-    <h4>ParkingSlot</h4>
+
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -24,6 +24,7 @@
         </dd>
     </dl>
 </div>
+<p></p>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.ParkingSlotId">Edit</a> |
     <a asp-action="Index">Back to List</a>

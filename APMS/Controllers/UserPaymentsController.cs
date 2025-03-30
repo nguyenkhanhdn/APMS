@@ -11,22 +11,23 @@ using Microsoft.AspNetCore.Authorization;
 namespace APMS.Controllers
 {
     [Authorize()]
-    public class ParkingAvailabilitiesController : Controller
+    public class UserPaymentsController : Controller
     {
         private readonly ParkingDbContext _context;
 
-        public ParkingAvailabilitiesController(ParkingDbContext context)
+        public UserPaymentsController(ParkingDbContext context)
         {
             _context = context;
         }
 
-        // GET: ParkingAvailabilities
+        // GET: UserPayments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ParkingAvailabilities.ToListAsync());
+            var parkingDbContext = _context.UserPayments.Include(u => u.Tariff).Include(u => u.User);
+            return View(await parkingDbContext.ToListAsync());
         }
 
-        // GET: ParkingAvailabilities/Details/5
+        // GET: UserPayments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,39 +35,45 @@ namespace APMS.Controllers
                 return NotFound();
             }
 
-            var parkingAvailability = await _context.ParkingAvailabilities
+            var userPayment = await _context.UserPayments
+                .Include(u => u.Tariff)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (parkingAvailability == null)
+            if (userPayment == null)
             {
                 return NotFound();
             }
 
-            return View(parkingAvailability);
+            return View(userPayment);
         }
 
-        // GET: ParkingAvailabilities/Create
+        // GET: UserPayments/Create
         public IActionResult Create()
         {
+            ViewData["TariffId"] = new SelectList(_context.Tariff, "TariffId", "TariffName");
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName");
             return View();
         }
 
-        // POST: ParkingAvailabilities/Create
+        // POST: UserPayments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TotalSlots,AvailableSlots")] ParkingAvailability parkingAvailability)
+        public async Task<IActionResult> Create([Bind("Id,UserId,TariffId,PaymentDate,Amount,IsPaid")] UserPayment userPayment)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(parkingAvailability);
+                _context.Add(userPayment);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(parkingAvailability);
+            ViewData["TariffId"] = new SelectList(_context.Tariff, "TariffId", "TariffName", userPayment.TariffId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", userPayment.UserId);
+            return View(userPayment);
         }
 
-        // GET: ParkingAvailabilities/Edit/5
+        // GET: UserPayments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -74,22 +81,24 @@ namespace APMS.Controllers
                 return NotFound();
             }
 
-            var parkingAvailability = await _context.ParkingAvailabilities.FindAsync(id);
-            if (parkingAvailability == null)
+            var userPayment = await _context.UserPayments.FindAsync(id);
+            if (userPayment == null)
             {
                 return NotFound();
             }
-            return View(parkingAvailability);
+            ViewData["TariffId"] = new SelectList(_context.Tariff, "TariffId", "TariffName", userPayment.TariffId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", userPayment.UserId);
+            return View(userPayment);
         }
 
-        // POST: ParkingAvailabilities/Edit/5
+        // POST: UserPayments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,TotalSlots,AvailableSlots")] ParkingAvailability parkingAvailability)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,TariffId,PaymentDate,Amount,IsPaid")] UserPayment userPayment)
         {
-            if (id != parkingAvailability.Id)
+            if (id != userPayment.Id)
             {
                 return NotFound();
             }
@@ -98,12 +107,12 @@ namespace APMS.Controllers
             {
                 try
                 {
-                    _context.Update(parkingAvailability);
+                    _context.Update(userPayment);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ParkingAvailabilityExists(parkingAvailability.Id))
+                    if (!UserPaymentExists(userPayment.Id))
                     {
                         return NotFound();
                     }
@@ -114,10 +123,12 @@ namespace APMS.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(parkingAvailability);
+            ViewData["TariffId"] = new SelectList(_context.Tariff, "TariffId", "TariffName", userPayment.TariffId);
+            ViewData["UserId"] = new SelectList(_context.Users, "UserId", "FullName", userPayment.UserId);
+            return View(userPayment);
         }
 
-        // GET: ParkingAvailabilities/Delete/5
+        // GET: UserPayments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -125,34 +136,36 @@ namespace APMS.Controllers
                 return NotFound();
             }
 
-            var parkingAvailability = await _context.ParkingAvailabilities
+            var userPayment = await _context.UserPayments
+                .Include(u => u.Tariff)
+                .Include(u => u.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (parkingAvailability == null)
+            if (userPayment == null)
             {
                 return NotFound();
             }
 
-            return View(parkingAvailability);
+            return View(userPayment);
         }
 
-        // POST: ParkingAvailabilities/Delete/5
+        // POST: UserPayments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var parkingAvailability = await _context.ParkingAvailabilities.FindAsync(id);
-            if (parkingAvailability != null)
+            var userPayment = await _context.UserPayments.FindAsync(id);
+            if (userPayment != null)
             {
-                _context.ParkingAvailabilities.Remove(parkingAvailability);
+                _context.UserPayments.Remove(userPayment);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ParkingAvailabilityExists(int id)
+        private bool UserPaymentExists(int id)
         {
-            return _context.ParkingAvailabilities.Any(e => e.Id == id);
+            return _context.UserPayments.Any(e => e.Id == id);
         }
     }
 }

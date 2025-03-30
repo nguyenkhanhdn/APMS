@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using APMS.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APMS.Controllers
 {
+    [Authorize()]
     public class VehiclesController : Controller
     {
         private readonly ParkingDbContext _context;
