@@ -19,12 +19,27 @@ namespace APMS.Controllers
         {
             _context = context;
         }
+        public int GetVehicleIdByEmail(string email)
+        {            
+            var vehicle = _context.Vehicles.Include(v => v.User).FirstOrDefault(v => v.User.Email == email);
+            if (vehicle != null)
+            {
+                return vehicle.VehicleId;
+            }
+            else
+            {
+                return -1;
+            }
+        }
 
         // GET: Transactions
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string email)
         {
+            var vehicleId = GetVehicleIdByEmail(email);
+
             var parkingDbContext = _context.Transactions.Include(t => t.ParkingSlot).Include(t => t.Vehicle);
-            return View(await parkingDbContext.ToListAsync());
+
+            return View(await parkingDbContext.Where(t=>t.VehicleId==vehicleId).ToListAsync());
         }
 
         // GET: Transactions/Details/5
